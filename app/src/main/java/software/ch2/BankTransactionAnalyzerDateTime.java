@@ -17,6 +17,7 @@ public class BankTransactionAnalyzerDateTime {
         final List<String> lines = Files.readAllLines(path);
         double total = 0d;
         final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         for (String line : lines) {
             final String[] columns = line.split(",");
             final LocalDate date = LocalDate.parse(columns[0], DATE_PATTERN);

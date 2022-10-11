@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BankStatementCSVParser {
-    private static final String RESOURCE = "/Users/jihwooon/Documents/Real-World-Software-Development/app/src/main/resources/";
-    private static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    public static final String RESOURCE = "/Users/jihwooon/Documents/Real-World-Software-Development/app/src/main/resources/";
+    public static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private BankTransaction parseFromCSV(final String line) {
         final String[] columns = line.split(",");
@@ -25,25 +26,28 @@ public class BankStatementCSVParser {
         return new BankTransaction(date, amount, description);
     }
 
-    public List<BankTransaction> parseLinesFromCSV(final List<String> linses) {
+    public List<BankTransaction> parseLinesFromCSV(final List<String> lines) {
         ArrayList<BankTransaction> bankTransactions = new ArrayList<>();
-        for (final String line : linses) {
+        for (final String line : lines) {
             bankTransactions.add(parseFromCSV(line));
         }
         return bankTransactions;
     }
 
-    private static double calculateTotalAmount(final List<BankTransaction> bankTransactions) {
-        return bankTransactions.stream().mapToDouble(BankTransaction::getAmount).sum();
+    public static double calculateTotalAmount(final List<BankTransaction> bankTransactions) {
+        return bankTransactions.stream()
+                .mapToDouble(BankTransaction::getAmount)
+                .sum();
     }
 
-    private static List<BankTransaction> selectInMonth(final List<BankTransaction> bankTransactions, final Month month) {
+    public static List<BankTransaction> selectInMonth(final List<BankTransaction> bankTransactions, final Month month) {
         return bankTransactions.stream()
                 .filter(bankStatement -> month.equals(bankStatement.getDate().getMonth()))
                 .collect(Collectors.toList());
     }
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
+
         BankStatementCSVParser bankStatementCSVParser = new BankStatementCSVParser();
 
         final Path path = Paths.get(RESOURCE + "bank-data-simple.csv");
